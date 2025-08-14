@@ -24,8 +24,9 @@ jobs:
       - name: Get latest tag and create new one
         id: tag_version
         run: |
-          git fetch --tags
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null)
+          # Get the latest tag, or set to empty if no tags exist
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
           if [ -z "$latest_tag" ]; then
             new_tag="v0.0.1"
           else
